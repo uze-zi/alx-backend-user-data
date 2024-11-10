@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+"""This module provides a function to obfuscate sensitive fields in a log message."""
+
 
 import re
-
+from typing import List
 
 def filter_datum(fields, redaction, message, separator):
     """
@@ -16,9 +18,5 @@ def filter_datum(fields, redaction, message, separator):
     Returns:
     - str: The filtered message with sensitive data redacted.
     """
-    # Build regex pattern to match each field
-    for field in fields:
-        # Match 'field=value' pattern and replace value with redaction
-        pattern = f"{field}=[^;{separator}]*"
-        message = re.sub(pattern, f"{field}={redaction}", message)
-    return message
+    pattern = r'({})=([^{}]+)'.format('|'.join(fields), separator)
+    return re.sub(pattern, r'\1=' + redaction, message)
