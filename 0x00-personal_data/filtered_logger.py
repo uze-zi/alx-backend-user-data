@@ -22,4 +22,3 @@ def filter_datum(fields, redaction, message, separator):
         pattern = f"{field}=[^;{separator}]*"
         message = re.sub(pattern, f"{field}={redaction}", message)
     return message
-
